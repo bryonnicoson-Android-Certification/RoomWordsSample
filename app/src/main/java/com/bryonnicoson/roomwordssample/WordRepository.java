@@ -23,7 +23,7 @@ public class WordRepository {
 
     // returns cached words as LiveData.  Room executes all queries on separate thread.
     // observed LiveData notifies the observer when the data changes
-    LiveData<List<Word>> getmAllWords() {
+    LiveData<List<Word>> getAllWords() {
         return mAllWords;
     }
 
@@ -31,7 +31,7 @@ public class WordRepository {
         new insertAsyncTask(mWordDao).execute(word);
     }
 
-    
+
     private static class insertAsyncTask extends AsyncTask<Word, Void, Void> {
 
         private WordDao mAsyncTaskDao;
