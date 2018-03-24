@@ -15,22 +15,25 @@ public class WordRepository {
     private WordDao mWordDao;
     private LiveData<List<Word>> mAllWords;
 
+
+    // Note that in order to unit test the WordRepository, you have to remove the Application
+    // dependency.  See the BasicSample at https://github.com/googlesamples
     WordRepository(Application application) {
         WordRoomDatabase db = WordRoomDatabase.getDatabase(application);
         mWordDao = db.wordDao();
         mAllWords = mWordDao.getAllWords();
     }
 
-    // returns cached words as LiveData.  Room executes all queries on separate thread.
-    // observed LiveData notifies the observer when the data changes
+    // Room executes all queries on a separate thread.
+    // Observed LiveData will notify the observer when the data has changed
     LiveData<List<Word>> getAllWords() {
         return mAllWords;
     }
 
+    // You must call this on a non-UI thread or your app will crash.
     public void insert(Word word) {
         new insertAsyncTask(mWordDao).execute(word);
     }
-
 
     private static class insertAsyncTask extends AsyncTask<Word, Void, Void> {
 
@@ -47,4 +50,3 @@ public class WordRepository {
         }
     }
 }
-

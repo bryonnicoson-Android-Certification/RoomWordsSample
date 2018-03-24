@@ -13,6 +13,9 @@ import java.util.List;
 public class WordViewModel extends AndroidViewModel {
 
     private WordRepository mRepository;
+    // Using LiveData and caching what getAllWords() returns has benefits:
+    // - can put observer on the data (instead of polling) and only update UI when data changes
+    // - repository is completely separated from the UI through the ViewModel
     private LiveData<List<Word>> mAllWords;
 
     public WordViewModel(Application application) {
