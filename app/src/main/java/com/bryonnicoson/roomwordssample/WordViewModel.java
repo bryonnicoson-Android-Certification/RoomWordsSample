@@ -7,7 +7,8 @@ import android.arch.lifecycle.LiveData;
 import java.util.List;
 
 /**
- * Created by bryon on 3/23/18.
+ * The WordViewModel provides the interface between the UI and the data layer of the app,
+ * represented by the repository.
  */
 
 public class WordViewModel extends AndroidViewModel {
@@ -30,6 +31,14 @@ public class WordViewModel extends AndroidViewModel {
 
     public void insert(Word word) {
         mRepository.insert(word);
+    }
+
+    public void deleteAll() {
+        mRepository.deleteAll();
+    }
+
+    public void deleteWord(Word word) {
+        mRepository.deleteWord(word);
     }
 
 }

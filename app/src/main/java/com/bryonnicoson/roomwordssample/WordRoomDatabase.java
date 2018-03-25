@@ -21,11 +21,10 @@ public abstract class WordRoomDatabase extends RoomDatabase {
     private static WordRoomDatabase INSTANCE;
 
     // create singleton
-    public static WordRoomDatabase getDatabase(final Context context) {
+    static WordRoomDatabase getDatabase(final Context context) {
         if (INSTANCE == null) {
             synchronized (WordRoomDatabase.class) {
                 if (INSTANCE == null) {
-                    // create database
                     INSTANCE = Room.databaseBuilder(context.getApplicationContext(),
                             WordRoomDatabase.class, "word_database")
                             // todo: implement non-destructive migration
@@ -66,13 +65,13 @@ public abstract class WordRoomDatabase extends RoomDatabase {
 
         @Override
         protected Void doInBackground(final Void... voids) {
-            // start the app with a clean db every time.
-            // not needed if you only populate db on creation
-            mDao.deleteAll();
 
-            for (int i = 0; i <= words.length -1; i++) {
-                Word word = new Word(words[i]);
-                mDao.insert(word);
+            // if database is empty, create initial list of words
+            if (mDao.getAnyWord().length < 1) {
+                for (int i = 0; i <= words.length - 1; i++) {
+                    Word word = new Word(words[i]);
+                    mDao.insert(word);
+                }
             }
             return null;
         }

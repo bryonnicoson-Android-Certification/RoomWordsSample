@@ -10,13 +10,13 @@ import android.widget.TextView;
 import java.util.List;
 
 /**
- * Created by bryon on 3/23/18.
+ * This is the adapter for the RecyclerView that displays the list of words.
  */
 
 public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordViewHolder> {
 
     private final LayoutInflater mInflater;
-    private List<Word> mWords;
+    private List<Word> mWords;  // cached copy of words
 
     WordListAdapter(Context context) {
         mInflater = LayoutInflater.from(context);
@@ -29,15 +29,18 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
     }
 
     @Override
-    public void onBindViewHolder(WordListAdapter.WordViewHolder holder, int position) {
+    public void onBindViewHolder(WordViewHolder holder, int position) {
         if (mWords != null) {
             Word current = mWords.get(position);
             holder.wordItemView.setText(current.getWord());
         } else {
-            holder.wordItemView.setText("data unavailable");
+            holder.wordItemView.setText(R.string.no_word);
         }
     }
 
+    /**
+     * Associate a list of words with this adapater
+     */
     void setWords(List<Word> words) {
         mWords = words;
         notifyDataSetChanged();
@@ -45,9 +48,21 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
 
     @Override
     public int getItemCount() {
-        if (mWords != null)
+        if (mWords != null)             // mWords is initially null
             return mWords.size();
         else return 0;
+    }
+
+    /**
+     * Get the word at a given position.
+     * This method is useful for identifying which word was clicked or swiped in methods
+     * that handle user events.
+     *
+     * @param position
+     * @return The words at the given position
+     */
+    public Word getWordAtPosition(int position) {
+        return mWords.get(position);
     }
 
     class WordViewHolder extends RecyclerView.ViewHolder {
@@ -58,5 +73,4 @@ public class WordListAdapter extends RecyclerView.Adapter<WordListAdapter.WordVi
             wordItemView = itemView.findViewById(R.id.textView);
         }
     }
-
 }
